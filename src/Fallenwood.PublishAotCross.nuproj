@@ -1,4 +1,6 @@
 <Project Sdk="Microsoft.Build.NoTargets">
+  <Import Project="ZigVersion.props" />
+
   <PropertyGroup>
 
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -14,6 +16,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Vezel.Zig.Toolsets.win-x64" Version="$(ZigVersion)" GeneratePathProperty="true" />
+    <PackageReference Include="Vezel.Zig.Toolsets.win-arm64" Version="$(ZigVersion)" GeneratePathProperty="true" />
+    <PackageReference Include="Vezel.Zig.Toolsets.win-x86" Version="$(ZigVersion)" GeneratePathProperty="true" />
+    <PackageReference Include="Vezel.Zig.Toolsets.linux-x64" Version="$(ZigVersion)" GeneratePathProperty="true" />
+    <PackageReference Include="Vezel.Zig.Toolsets.linux-arm64" Version="$(ZigVersion)" GeneratePathProperty="true" />
+    <PackageReference Include="Vezel.Zig.Toolsets.osx-x64" Version="$(ZigVersion)" GeneratePathProperty="true" />
+    <PackageReference Include="Vezel.Zig.Toolsets.osx-arm64" Version="$(ZigVersion)" GeneratePathProperty="true" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Fallenwood.PublishAotCross.props">
+      <Pack>true</Pack>
+      <PackagePath>build</PackagePath>
+    </None>
+    <None Include="ZigVersion.props">
+      <Pack>true</Pack>
+      <PackagePath>build</PackagePath>
+    </None>
     <None Include="Fallenwood.PublishAotCross.targets">
       <Pack>true</Pack>
       <PackagePath>build</PackagePath>
