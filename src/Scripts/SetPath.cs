@@ -40,6 +40,14 @@ if (isTargetingWindows) {
 
     return Success;
   }
+
+  if (isHostWindows && AotPreferCustom) {
+    // Use xwin toolchain for Windows native compilation instead of VS C++ tools
+    Environment.SetEnvironmentVariable("CustomAotToolChain", "xwin");
+    CustomAotToolChain = "xwin";
+
+    return Success;
+  }
 } else {
   if (buildenv != RuntimeIdentifier || AotPreferCustom) {
     Environment.SetEnvironmentVariable("PATH", MSBuildThisFileDirectory + Path.PathSeparator + Environment.GetEnvironmentVariable("PATH"));

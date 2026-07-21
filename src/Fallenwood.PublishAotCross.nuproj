@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.Build.NoTargets">
   <Import Project="ZigVersion.props" />
+  <Import Project="..\tools\ToolsetsVersion.props" />
 
   <PropertyGroup>
 
@@ -23,6 +24,10 @@
     <PackageReference Include="Vezel.Zig.Toolsets.linux-arm64" Version="$(ZigVersion)" GeneratePathProperty="true" />
     <PackageReference Include="Vezel.Zig.Toolsets.osx-x64" Version="$(ZigVersion)" GeneratePathProperty="true" />
     <PackageReference Include="Vezel.Zig.Toolsets.osx-arm64" Version="$(ZigVersion)" GeneratePathProperty="true" />
+    <PackageReference Include="XWin.Toolsets.win-x64" Version="$(XWinVersion)" GeneratePathProperty="true" />
+    <PackageReference Include="XWin.Toolsets.win-arm64" Version="$(XWinVersion)" GeneratePathProperty="true" />
+    <PackageReference Include="LLD.Link.Toolsets.win-x64" Version="$(LLDVersion)" GeneratePathProperty="true" />
+
   </ItemGroup>
 
   <ItemGroup>
@@ -70,6 +75,7 @@
       <Pack>true</Pack>
       <PackagePath>build</PackagePath>
     </None>
+
     <None Include="Scripts/SetPath.cs">
       <Pack>true</Pack>
       <PackagePath>build/Scripts/SetPath.cs</PackagePath>

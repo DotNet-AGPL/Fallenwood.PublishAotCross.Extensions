@@ -62,6 +62,10 @@
       UseExternalZig="$(UseExternalZig)">
       <Output TaskParameter="CustomAotToolChain" PropertyName="CustomAotToolChain"/>
     </PrependPathIfCrossCompile>
+
+    <PropertyGroup Condition="'$(CustomAotToolChain)' == 'xwin' and $(RuntimeIdentifier.StartsWith('win'))">
+      <IlcUseEnvironmentalTools>true</IlcUseEnvironmentalTools>
+    </PropertyGroup>
   </Target>
 
   <!-- BEGIN: Works around ILCompiler targets not detecting this as a cross compilation -->
@@ -101,26 +105,24 @@
 
       <XwinArches Condition="'$(XwinArches)' == ''">x86_64,aarch64</XwinArches>
 
-      <CppLinker>lld-link</CppLinker>
+      <CppLinker Condition="'$(PkgLLD_Link_Toolsets_win-x64)' != ''">$(PkgLLD_Link_Toolsets_win-x64)\tools\lld-link.exe</CppLinker>
+      <CppLinker Condition="'$(CppLinker)' == ''">lld-link</CppLinker>
+      <IlcUseEnvironmentalTools Condition="$(HostRuntimeIdentifier.StartsWith('win'))">true</IlcUseEnvironmentalTools>
+
+      <_XWinDir Condition="'$(PkgXWin_Toolsets_win-x64)' != ''">$(PkgXWin_Toolsets_win-x64)\tools\</_XWinDir>
+      <_XWinStore Condition="'$(PkgXWin_Toolsets_win-x64)' != ''">$(PkgXWin_Toolsets_win-x64)\tools\.xwin-store</_XWinStore>
     </PropertyGroup>
 
-    <Message
-      Condition="'$(CustomAotToolChain)' == 'xwin' and !Exists('$(MSBuildThisFileDirectory).xwin-cache/splat/sdk/lib/ucrt/$(CrossCompileArch)')"
-      Importance="high"
-      Text="The xwin cache does not yet exist, building this may take a while..." />
-    <Exec
-      Condition="'$(CustomAotToolChain)' == 'xwin' and !Exists('$(MSBuildThisFileDirectory).xwin-cache/splat/sdk/lib/ucrt/$(CrossCompileArch)')"
-      ContinueOnError="false"
-      ConsoleToMsBuild="true"
-      Command="xwin --accept-license --cache-dir &quot;$(MSBuildThisFileDirectory).xwin-cache&quot; --arch $(XwinArches) --sdk-version 10.0.22621 splat --preserve-ms-arch-notation --include-debug-symbols" />
     <ItemGroup Condition=" '$(CustomAotToolChain)' == 'xwin' ">
       <_NoExpLinkerArg Include="@(LinkerArg->Replace('/NOEXP', ''))" />
       <_NoExpLinkerArg Remove="@(_NoExpLinkerArg)" Condition="$([System.String]::new('%(Identity)').StartsWith('/SOURCELINK:'))" />
       <LinkerArg Remove="@(LinkerArg)" />
 
-      <LinkerArg Include="/vctoolsdir:$(MSBuildThisFileDirectory).xwin-cache/splat/crt" />
-      <LinkerArg Include="/winsdkdir:$(MSBuildThisFileDirectory).xwin-cache/splat/sdk" />
-      <LinkerArg Include="/LIBPATH:$(MSBuildThisFileDirectory).xwin-cache/splat/sdk/lib/ucrt/$(CrossCompileArch)/" />
+      <LinkerArg Include="/vctoolsdir:$(_XWinStore)/splat/crt" />
+      <LinkerArg Include="/winsdkdir:$(_XWinStore)/splat/sdk" />
+      <LinkerArg Include="/LIBPATH:$(_XWinStore)/splat/sdk/lib/ucrt/$(CrossCompileArch)/" />
+      <LinkerArg Include="/LIBPATH:$(_XWinStore)/splat/sdk/lib/um/$(CrossCompileArch)/" />
+      <LinkerArg Include="/LIBPATH:$(_XWinStore)/splat/crt/lib/$(CrossCompileArch)/" />
 
       <LinkerArg Include="@(_NoExpLinkerArg)" />
     </ItemGroup>
