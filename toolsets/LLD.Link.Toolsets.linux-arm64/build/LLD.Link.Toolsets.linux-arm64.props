@@ -1,5 +1,5 @@
 <Project>
   <PropertyGroup>
-    <LLDDir>$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)..\tools\'))</LLDDir>
+    <LLDLinkToolsetsLinuxArm64Dir>$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)../tools/'))</LLDLinkToolsetsLinuxArm64Dir>
   </PropertyGroup>
 </Project>

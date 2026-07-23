@@ -1,21 +1,22 @@
 <Project Sdk="Microsoft.Build.NoTargets">
-  <Import Project="..\ToolsetsVersion.props" />
+  <Import Project="../ToolsetsVersion.props" />
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
     <PackageId>LLD.Link.Toolsets.osx-arm64</PackageId>
     <Version>$(LLDVersion).$(LLDRevision)</Version>
     <Authors>LLVM Project;DotNet-AGPL</Authors>
     <Description>lld-link (LLD COFF linker) for osx-arm64 host platform. MSVC-compatible linker used for NativeAOT cross-compilation.</Description>
-    <PackageProjectUrl>https://github.com/DotNet-AGPL/Fallenwood.PublishAotCross.Extensions/tree/main/toolsets/LLD.Link.Toolsets.osx-arm64</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/DotNet-AGPL/PublishAotCross.Tools/tree/main/toolsets/LLD.Link.Toolsets.osx-arm64</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <DevelopmentDependency>true</DevelopmentDependency>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="tools\lld-link" Pack="true" PackagePath="tools" />
-    <None Include="build\LLD.Link.Toolsets.osx-arm64.props" Pack="true" PackagePath="build" />
+    <None Include="tools/lld-link" Pack="true" PackagePath="tools" />
+    <None Include="build/LLD.Link.Toolsets.osx-arm64.props" Pack="true" PackagePath="buildTransitive" />
     <None Include="README.md" Pack="true" PackagePath="/" />
     <None Include="LICENSE" Pack="true" PackagePath="/" />
   </ItemGroup>
@@ -35,10 +36,10 @@
 
   <Target Name="EnsureLldLinkExtracted" BeforeTargets="Build">
     <PropertyGroup>
-      <_LldZip>$(MSBuildProjectDirectory)\tools\lld-link.zip</_LldZip>
-      <_LldExe>$(MSBuildProjectDirectory)\tools\lld-link</_LldExe>
+      <_LldZip>$(MSBuildProjectDirectory)/tools/lld-link.zip</_LldZip>
+      <_LldExe>$(MSBuildProjectDirectory)/tools/lld-link</_LldExe>
     </PropertyGroup>
     <Warning Condition="!Exists('$(_LldZip)')" Text="lld-link.zip not found. Run download-lld-link.ps1 first." />
-    <ExtractLldZip Condition="Exists('$(_LldZip)') and !Exists('$(_LldExe)')" ZipPath="$(_LldZip)" TargetDir="$(MSBuildProjectDirectory)\tools" />
+    <ExtractLldZip Condition="Exists('$(_LldZip)') and !Exists('$(_LldExe)')" ZipPath="$(_LldZip)" TargetDir="$(MSBuildProjectDirectory)/tools" />
   </Target>
 </Project>

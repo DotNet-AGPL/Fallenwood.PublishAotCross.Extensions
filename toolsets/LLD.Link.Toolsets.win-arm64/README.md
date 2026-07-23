@@ -6,12 +6,18 @@ Bundled in NuGet package - no manual installation required.
 
 **LLVM version:** 22.1.8
 
-**Source:** https://github.com/DotNet-AGPL/Fallenwood.PublishAotCross.Extensions/tree/main/toolsets/LLD.Link.Toolsets.win-arm64
+**Source:** https://github.com/DotNet-AGPL/PublishAotCross.Tools/tree/main/toolsets/LLD.Link.Toolsets.win-arm64
 
 **Contents:**
 - `tools/lld-link.exe` — LLVM LLD COFF linker (MSVC-compatible)
 
 **License:** MIT (lld-link binary is Apache-2.0 WITH LLVM-exception, see LICENSE)
+
+## MSBuild Integration
+
+This package automatically sets the `LLDLinkToolsetsWinArm64Dir` MSBuild property
+to the path of the extracted `lld-link` binary. It is available to the consuming
+project and its transitive dependents via `buildTransitive/` import.
 
 ## Disclaimer
 
